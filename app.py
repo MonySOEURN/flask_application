@@ -43,6 +43,13 @@ def users():
 
     return resp
 
+# find specific user accound using id\
+@app.route('/users/<id>')
+def user(id):
+    user = mongo.db.users.find_one({'_id': ObjectId(id)})
+    resp = dumps({ 'message': "user retrieved successfully.", 'status': 200, 'data': user})
+    return resp
+
 # error url response
 @app.errorhandler(404)
 def not_found(error=None):
