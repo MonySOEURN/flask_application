@@ -47,7 +47,24 @@ def users():
 @app.route('/users/<id>')
 def user(id):
     user = mongo.db.users.find_one({'_id': ObjectId(id)})
-    resp = dumps({ 'message': "user retrieved successfully.", 'status': 200, 'data': user})
+    if user == 'null':
+        resp = dumps({ 'message': "user retrieved successfully.", 'status': 200, 'data': user})
+    else :
+        resp = jsonify({
+            'message': "user not found",
+            'status': 404
+        })
+    return resp
+
+# delete user account
+@app.route('/users/delete/<id>', methods = ['DELETE'])
+def user_delete(id):
+    mongo.db.users.delete_one({'_id': ObjectId(id)})
+    resp = jsonify({
+        'message': "user delete successfully.",
+        'status': 200
+    })
+    resp.status_code = 200
     return resp
 
 # error url response
