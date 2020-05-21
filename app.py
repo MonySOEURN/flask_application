@@ -35,6 +35,14 @@ def add_user():
     else :
         return not_found()
 
+# recieve all user account
+@app.route('/users')
+def users():
+    users = mongo.db.users.find()
+    resp = dumps({ 'message': "users retrieved successfully.", 'status': 200, 'data': users})
+
+    return resp
+
 # error url response
 @app.errorhandler(404)
 def not_found(error=None):
