@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, url_for
 from flask_pymongo import PyMongo
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -6,9 +6,13 @@ from flask import jsonify, request
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
+from forms import RegistrationForm, LoginForm
+
+app = Flask(__name__, template_folder='templates')
 app.secret_key = "secretkey"
 app.config['MONGO_URI'] = "mongodb://localhost:27017/Users"
+
+app.config['SECRET_KEY'] = '81888e25a52b564b37ac50dcc7320a5b'
 
 mongo = PyMongo(app)
 
@@ -94,6 +98,45 @@ def user_update(id):
         return resp
     else :
         return user_notFound()
+
+# -------------------- another source part ----------------------------
+posts = [
+    {
+        'author': 'SOEURN Mony',
+        'title': 'Blog post 1',
+        'content': 'First Post content',
+        'date_posted': 'May 22, 2020',
+    },
+    {
+        'author': 'FOUR Year',
+        'title': 'Blog post 2',
+        'content': 'Second post content',
+        'date_posted': 'May 23, 2020',
+    },
+]
+
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template('home.html', posts=posts)
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title='About')
+
+@app.route('/register')
+def register():
+    form = RegistrationForm()
+    return render_template('register.html', title= 'Register', form=form)
+
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template('login.html', title= 'Login', form=form)
+
+
+# ------------------------------------------------
 
 # error url response
 @app.errorhandler(404)
