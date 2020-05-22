@@ -5,6 +5,9 @@ from bson.objectid import ObjectId
 from flask import jsonify, request
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
+from mongoengine import Document
+from mongoengine import DateTimeField, StringField, ReferenceField, ListField
+from datatime import datetime
 
 from forms import RegistrationForm, LoginForm
 
@@ -15,6 +18,34 @@ app.config['MONGO_URI'] = "mongodb://localhost:27017/Users"
 app.config['SECRET_KEY'] = '81888e25a52b564b37ac50dcc7320a5b'
 
 mongo = PyMongo(app)
+
+# ---------------- New data creation --------------------------
+
+class User(Document):
+    name = StringField(max_length=20, required=True, unique=True)
+    email = StringField(max_length=120, required=True, unique=True)
+    image_file = StringField(max_length=20, required=True, default='default.jpg')
+    password = StringField(max_length=60, required=True)
+    # post = ListField(Post, required=True)
+    created_at = DateTimeField(defaul=datetime.utcnow)
+    updated_at = DateTimeField()
+    deleted_at = DateTimeField()
+
+    def __repr__(self):
+        return f"User('{self.username}','{self.email}','{self.image_file}')"
+
+class Post(Document):
+    title = StringField(max_length=100, required=True)
+    date_posted = DateTimeField(default = datetime.utcnow)
+    content = StringField(max_length=2000, required=True)
+    user_id = ReferenceField(User, required=True)
+    updated_at = DateTimeField()
+    deleted_at = DateTimeField()
+
+    def __repr__(self):
+        return f"Post('{self.title}','{self.date_posted}')"
+
+# ------------------------------------------
 
 # create new user account
 @app.route('/add', methods = ['POST'])
