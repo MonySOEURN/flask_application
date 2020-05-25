@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect
-from flask_pymongo import PyMongo
+# from flask_pymongo import PyMongo
+from flask.ext.mongoalchemy import MongoAlchemy
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import jsonify, request
@@ -12,12 +13,18 @@ from datatime import datetime
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__, template_folder='templates')
-app.secret_key = "secretkey"
-app.config['MONGO_URI'] = "mongodb://localhost:27017/Users"
 
+# ---- from library pymongo--------
+# app.config['MONGO_URI'] = "mongodb://localhost:27017/Users" 
+# app.secret_key = "secretkey"
+# mongo = PyMongo(app)
+# ------------
+
+# --------flask-MongoAlchemy------------
+app.config['MONGOALCHEMY_DATABASE'] = 'library'
 app.config['SECRET_KEY'] = '81888e25a52b564b37ac50dcc7320a5b'
-
-mongo = PyMongo(app)
+db = MongoAlchemy(app)
+# --------------------
 
 # ---------------- New data creation --------------------------
 
@@ -46,6 +53,11 @@ class Post(Document):
         return f"Post('{self.title}','{self.date_posted}')"
 
 # ------------------------------------------
+
+
+"""
+
+# ------------CRUD using Flask-PyMongo------------------
 
 # create new user account
 @app.route('/add', methods = ['POST'])
@@ -201,3 +213,4 @@ def user_notFound(error=None):
 if __name__ == "__main__":
     app.run(debug=True)
 
+"""
