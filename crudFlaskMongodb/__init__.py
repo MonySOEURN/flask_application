@@ -25,6 +25,8 @@ app.config['MONGO_URI'] = "mongodb://localhost:27017"
 app.secret_key = "secretkey"
 db = PyMongo(app)
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 # ------------
 
 # --------flask-MongoAlchemy------------
