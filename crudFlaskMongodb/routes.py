@@ -1,5 +1,6 @@
 import os
 import secrets
+from PIL import Image
 from flask import Flask, render_template, url_for, flash, redirect, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from crudFlaskMongodb import app, db, bcrypt
@@ -67,12 +68,23 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-def save_image_file(form_image_file):
+def save_image_file(form_image_file, current_user_profile):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_image_file.filename)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-    form_image_file.save(picture_path)
+
+    if current_user_profile != 'default.jpg':
+        current_file = os.path.join(app.root_path, 'static/profile_pics/')
+        os.remove(current_file + current_user_profile)
+    
+    # working as resize the image
+    output_size = (125, 125)
+    i = Image.open(form_image_file)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+    
+    # form_image_file.save(picture_path)
     return picture_fn
 
 @app.route('/account', methods = ['GET', 'POST'])
@@ -89,7 +101,7 @@ def account():
         if user: 
             # solve update profile picture of user using pymongo
             if form.image_file.data:
-                picture_file = save_image_file(form.image_file.data)
+                picture_file = save_image_file(form.image_file.data, current_user.image_file)
                 current_user.image_file = picture_file
                 user.update(username=form.username.data, email=form.email.data, image_file=picture_file)
             else:
