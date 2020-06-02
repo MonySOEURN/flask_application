@@ -1,2 +1,5 @@
 crudFlaskMongodb/__pycache__
 crudFlaskMongodb/static/profile_pics
+crudFlaskMongodb/forms/__pycache__
+crudFlaskMongodb/models/__pycache__
+crudFlaskMongodb/routes/__pycache__

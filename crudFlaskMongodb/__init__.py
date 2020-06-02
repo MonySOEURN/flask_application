@@ -1,20 +1,12 @@
 
-from flask import Flask
+from flask import Flask, render_template
 # from flask_mongoalchemy import MongoAlchemy
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-# from bson.json_util import dumps
-# from bson.objectid import ObjectId
-# from flask import jsonify, request
-# import json
-# from werkzeug.security import generate_password_hash, check_password_hash
-# from mongoengine import Document
-# from mongoengine import DateTimeField, StringField, ReferenceField, ListField
-# from datatime import datetime
-
 
 app = Flask(__name__, template_folder='templates')
+# app = Flask(__name__)
 
 # ---- from library pymongo--------
 app.config['DEFAULT_CONNECTION_NAME'] = "mongodb://localhost:27017"
@@ -37,4 +29,5 @@ login_manager.login_message_category = 'info'
 bcrypt = Bcrypt(app)
 # --------------------
 
-from crudFlaskMongodb import routes
+# import all routes
+from crudFlaskMongodb.routes import home, post, authenticate, account
