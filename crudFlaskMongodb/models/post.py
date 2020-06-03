@@ -11,5 +11,9 @@ class Post(db.Document):
     updated_at = db.DateTimeField()
     deleted_at = db.DateTimeField()
 
+    meta = {
+        'order_by': ['-posted_date']
+    }
+
     def __repr__(self):
         return f"Post('{self.title}','{self.date_posted}')"

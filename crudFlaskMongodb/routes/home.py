@@ -7,18 +7,8 @@ from crudFlaskMongodb.models.post import Post
 def home():
     page = request.args.get('page', 1, type=int)
 
-    # working
-    # posts = Post.objects.limit(5)
-    # posts = Post.objects().limit(5)
-    # posts = Post.objects().limit(5).all()
-    # posts = Post.objects()
-    # posts = Post.objects().skip(page).limit(5)
-    # posts = Post.objects.skip(page).limit(5).all()
-
-    posts = Post.objects.paginate(page=page, per_page=5)
-
-
-
+    # get the post in descending order
+    posts = Post.objects.order_by("-date_posted").paginate(page=page, per_page=5)
     return render_template('home.html', posts=posts)
 
 @app.route('/about')
