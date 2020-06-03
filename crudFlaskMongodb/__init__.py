@@ -1,7 +1,8 @@
 
 from flask import Flask, render_template
 # from flask_mongoalchemy import MongoAlchemy
-from flask_pymongo import PyMongo
+# from flask_pymongo import PyMongo
+from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
@@ -15,7 +16,7 @@ app.config['DEFAULT_DATABASE_NAME'] = "Users"
 app.config['MONGO_DBNAME'] = 'Users'
 app.config['MONGO_URI'] = "mongodb://localhost:27017" 
 app.secret_key = "secretkey"
-db = PyMongo(app)
+db = MongoEngine(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'

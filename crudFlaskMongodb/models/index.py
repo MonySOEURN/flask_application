@@ -4,4 +4,6 @@ from datetime import datetime
 from crudFlaskMongodb import login_manager
 from flask_login import UserMixin
 
+from crudFlaskMongodb import db
+
 register_connection(alias=DEFAULT_CONNECTION_NAME, name='Users')
