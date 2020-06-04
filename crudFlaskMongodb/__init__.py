@@ -46,5 +46,9 @@ bcrypt = Bcrypt(app)
 # --------------------
 
 #------------- import to initialize all routes -----------
+from crudFlaskMongodb.errors.handlers import errors
+
+app.register_blueprint(errors)
+
 from crudFlaskMongodb.routes import home, post, authenticate, account
 #------------------------
