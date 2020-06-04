@@ -5,11 +5,12 @@ from flask import Flask, render_template
 from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 
 app = Flask(__name__, template_folder='templates')
 # app = Flask(__name__)
 
-# ---- from library pymongo--------
+# ---- from library pymongo or flask_mongoengine --------
 app.config['DEFAULT_CONNECTION_NAME'] = "mongodb://localhost:27017"
 app.config['DEFAULT_DATABASE_NAME'] = "Users"
 
@@ -17,9 +18,23 @@ app.config['MONGO_DBNAME'] = 'Users'
 app.config['MONGO_URI'] = "mongodb://localhost:27017" 
 app.secret_key = "secretkey"
 db = MongoEngine(app)
+#------------------
+
+
+# ---------- add and config login manager---------------
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
+# ------------
+
+# ----------- add and config mail-------------
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = 'c813910e8360f8'
+app.config['MAIL_PASSWORD'] = 'e4bc9cadc74800'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail = Mail(app)
 # ------------
 
 # --------flask-MongoAlchemy------------
@@ -30,5 +45,6 @@ login_manager.login_message_category = 'info'
 bcrypt = Bcrypt(app)
 # --------------------
 
-# import all routes
+#------------- import to initialize all routes -----------
 from crudFlaskMongodb.routes import home, post, authenticate, account
+#------------------------
