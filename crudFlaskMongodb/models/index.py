@@ -1,9 +1,9 @@
 from mongoengine import Document
 from mongoengine import DateTimeField, StringField, ReferenceField, ListField, DEFAULT_CONNECTION_NAME, register_connection
 from datetime import datetime
-from crudFlaskMongodb import login_manager, app
+from crudFlaskMongodb import login_manager
 from flask_login import UserMixin
-from flask import json, flash
+from flask import json, flash, current_app
 
 from crudFlaskMongodb import db
 

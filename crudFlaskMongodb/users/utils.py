@@ -1,19 +1,19 @@
 import os
 import secrets
 from PIL import Image
-from flask import url_for, render_template
+from flask import url_for, render_template, current_app
 from flask_mail import Message
-from crudFlaskMongodb import app, mail
+from crudFlaskMongodb import mail
 
 
 def save_image_file(form_image_file, current_user_profile):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_image_file.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
 
     if current_user_profile != 'default.jpg':
-        current_file = os.path.join(app.root_path, 'static/profile_pics/')
+        current_file = os.path.join(current_app.root_path, 'static/profile_pics/')
         os.remove(current_file + current_user_profile)
     
     # working as resize the image
