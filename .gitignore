@@ -1,5 +1,6 @@
 crudFlaskMongodb/__pycache__
 crudFlaskMongodb/static/profile_pics
-crudFlaskMongodb/forms/__pycache__
 crudFlaskMongodb/models/__pycache__
-crudFlaskMongodb/routes/__pycache__
+crudFlaskMongodb/main/__pycache__
+crudFlaskMongodb/posts/__pycache__
+crudFlaskMongodb/users/__pycache__

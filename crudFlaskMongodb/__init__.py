@@ -23,7 +23,7 @@ db = MongoEngine(app)
 
 # ---------- add and config login manager---------------
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 # ------------
 
@@ -47,8 +47,12 @@ bcrypt = Bcrypt(app)
 
 #------------- import to initialize all routes -----------
 from crudFlaskMongodb.errors.handlers import errors
+from crudFlaskMongodb.users.routes import users
+from crudFlaskMongodb.posts.routes import posts
+from crudFlaskMongodb.main.routes import main
 
 app.register_blueprint(errors)
-
-from crudFlaskMongodb.routes import home, post, authenticate, account
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
 #------------------------
