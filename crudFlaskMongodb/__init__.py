@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template
+from flask import Flask
 # from flask_mongoalchemy import MongoAlchemy
 # from flask_pymongo import PyMongo
 from flask_mongoengine import MongoEngine
@@ -8,10 +8,10 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from crudFlaskMongodb.config import Config
 
+
 # ---- from library pymongo or flask_mongoengine --------
 db = MongoEngine()
 #------------------
-
 
 # ---------- add and config login manager---------------
 login_manager = LoginManager()
@@ -28,11 +28,18 @@ mail = Mail()
 bcrypt = Bcrypt()
 # --------------------
 
+api_key = '4321fb8efd95be77186b5fca6ca52b23'
+base_url = 'https://api.themoviedb.org/3/discover/movie?api_key='+api_key
+# base_url = 'https://api.themoviedb.org/3/discover/movie/?api_key'+api_key
+
 
 # function using for multiple app version such as testing or production
 def create_app(config_class = Config):
     app = Flask(__name__, template_folder='templates')
     # app = Flask(__name__)
+
+    # using class Config
+    app.config.from_object(Config)
 
     # expandable extension
     db.init_app(app)
@@ -40,20 +47,19 @@ def create_app(config_class = Config):
     mail.init_app(app)
     bcrypt.init_app(app)
 
-    # using class Config
-    app.config.from_object(Config)
-
 
     #------------- import to initialize all Blueprin -----------
     from crudFlaskMongodb.errors.handlers import errors
     from crudFlaskMongodb.users.routes import users
     from crudFlaskMongodb.posts.routes import posts
     from crudFlaskMongodb.main.routes import main
+    from crudFlaskMongodb.movies.routes import movies
 
     app.register_blueprint(errors)
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
+    app.register_blueprint(movies)
     #------------------------
 
     return app
